@@ -85,9 +85,8 @@ public class Login_View{
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        // Perform input validation and login logic here
+        // cek data, apakah valid dengan data DB? 
         
-        // Display warnings or proceed with login based on validation
         
     }
     
