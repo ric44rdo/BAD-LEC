@@ -9,6 +9,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import model.Product;
 
 public class UpdateDeleteProduct_View{
@@ -21,7 +23,9 @@ public class UpdateDeleteProduct_View{
     private TextField priceField;
     private TextField quantityField;
     private TextField supplierField;
-    private Button submitButton;
+    private Button updateButton; 
+    private Button deleteButton;
+    private FlowPane buttonWrapper;
     private TableView<Product> productTableView;
     private Stage primaryStage;
 
@@ -71,6 +75,17 @@ public class UpdateDeleteProduct_View{
         Scene scene = new Scene(vbox);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+//      Create an event handler for the "Add New Product" menu item
+        EventHandler<ActionEvent> addProductHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                handleAddProductMenuItemClick();
+            }
+        };
+
+        // Attach the event handler to the "Add New Product" menu item
+        addProductItem.setOnAction(addProductHandler);
     }
 
     private HBox createSearchBox() {
@@ -100,7 +115,7 @@ public class UpdateDeleteProduct_View{
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setPadding(new Insets(0, 20, 0, 20));
         vbox.setSpacing(10);
-        Label titleLabel = new Label("Add New Product");
+        Label titleLabel = new Label("Update or Delete Product");
         titleLabel.setPadding(new Insets(10, 0, 0, 0));
         GridPane grid = createAddProductForm();
         vbox.getChildren().addAll(titleLabel, grid);
@@ -124,7 +139,16 @@ public class UpdateDeleteProduct_View{
         priceField = new TextField();
         quantityField = new TextField();
         supplierField = new TextField();
-        submitButton = new Button("Submit");
+        updateButton = new Button("Update");
+        deleteButton = new Button("Delete");
+        buttonWrapper = new FlowPane();
+        buttonWrapper.getChildren().add(updateButton);
+        buttonWrapper.getChildren().add(deleteButton);
+        
+        buttonWrapper.setAlignment(Pos.CENTER_LEFT); // Set alignment to center
+        buttonWrapper.setHgap(3); // Set horizontal gap between nodes
+        buttonWrapper.setVgap(3); // Set vertical gap between nodes
+        buttonWrapper.setPrefWrapLength(Region.USE_PREF_SIZE);
 
         grid.add(productNameLabel, 0, 0);
         grid.add(categoryLabel, 0, 1);
@@ -136,8 +160,14 @@ public class UpdateDeleteProduct_View{
         grid.add(priceField, 1, 2);
         grid.add(quantityField, 1, 3);
         grid.add(supplierField, 1, 4);
-        grid.add(submitButton, 1, 5);
+        grid.add(buttonWrapper, 1, 5);
+        
 
         return grid;
+    }
+    
+    private void handleAddProductMenuItemClick() {
+        AddProduct_View addProduct = new AddProduct_View(primaryStage);
+        addProduct.ShowAddProductScene();
     }
 }

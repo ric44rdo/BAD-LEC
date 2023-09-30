@@ -1,6 +1,8 @@
 package view;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -72,6 +74,16 @@ public class AddProduct_View{
         Scene scene = new Scene(vbox);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        EventHandler<ActionEvent> deleteProductMenuHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                handleDeleteProductMenuItemClick();
+            }
+        };
+
+        // Attach the event handler to the "Add New Product" menu item
+        updateProductItem.setOnAction(deleteProductMenuHandler);
     }
 
     private HBox createSearchBox() {
@@ -140,5 +152,10 @@ public class AddProduct_View{
         grid.add(submitButton, 1, 5);
 
         return grid;
+    }
+    
+    private void handleDeleteProductMenuItemClick() {
+    	UpdateDeleteProduct_View deletePage = new UpdateDeleteProduct_View(primaryStage);
+    	deletePage.ShowUpdateDeleteProductScene();
     }
 }
