@@ -1,30 +1,31 @@
 package view;
 
-import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import controller.LoginController; // Import the LoginController
 
-public class Login_View{
+public class Login_View {
 
-	private TextField emailField;
+    private TextField emailField;
     private PasswordField passwordField;
     private Button loginButton;
     private Hyperlink registerLink;
     private Stage primaryStage;
-    
-    public Login_View(Stage primaryStage) {
+    private LoginController loginController; // Add a reference to the LoginController
+
+    public Login_View(Stage primaryStage, LoginController loginController) {
         this.primaryStage = primaryStage;
+        this.loginController = loginController; // Initialize the LoginController
     }
-    
+
     public void showLoginScene() {
         primaryStage.setTitle("FreshFind Inventory Management System");
-
 
         // Create center content
         GridPane centerGrid = createLoginForm();
@@ -36,7 +37,7 @@ public class Login_View{
         // Adjust spacing and padding
         VBox.setMargin(titleText, new Insets(10)); // Add space around the title
         centerGrid.setPadding(new Insets(20)); // Add space around the grid
-        
+
         // Create layout
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(titleText);
@@ -76,7 +77,6 @@ public class Login_View{
         grid.add(registerLink, 1, 3);
 
         loginButton.setOnAction(event -> handleLoginButtonClick());
-        registerLink.setOnAction(event -> handleRegisterLinkClick());
 
         return grid;
     }
@@ -85,15 +85,12 @@ public class Login_View{
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        // cek data, apakah valid dengan data DB? 
-        
-        
-    }
-    
-    
-    // ini abaikan saja tapi jangan diapus.
-    private void handleRegisterLinkClick() {
-        // Handle the registration link click event, e.g., open a registration form
-    	
+        // Call the loginController to handle the login
+        loginController.handleLoginButtonClick(email, password);
     }
 }
+
+    
+    
+
+

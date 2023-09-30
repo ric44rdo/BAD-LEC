@@ -1,15 +1,14 @@
 package view;
 
-import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 import model.Product;
 
 public class UpdateDeleteProduct_View{
