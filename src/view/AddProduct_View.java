@@ -1,6 +1,8 @@
 package view;
 
-import javafx.application.Application;
+import controller.AddProductController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,7 +14,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import model.Category;
 import model.Product;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class AddProduct_View{
 
@@ -27,14 +33,16 @@ public class AddProduct_View{
     private Button submitButton;
     private TableView<Product> productTableView;
     private Stage primaryStage;
+    private AddProductController addProductController;
 
     public AddProduct_View(Stage primaryStage){
     	this.primaryStage = primaryStage;
     }
 
     public void ShowAddProductScene() {
-        primaryStage.setTitle("FreshFind Inventory Management System");
 
+        primaryStage.setTitle("FreshFind Inventory Management System");
+        addProductController = new AddProductController(primaryStage);
         // Create menu bar and menus
         Menu menuProduct = new Menu("Product Management");
         MenuItem addProductItem = new MenuItem("Add New Product");
@@ -120,7 +128,7 @@ public class AddProduct_View{
         return vbox;
     }
 
-    private GridPane createAddProductForm() {
+    private GridPane createAddProductForm(){
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -134,6 +142,7 @@ public class AddProduct_View{
         productNameField = new TextField();
         categoryComboBox = new ComboBox<>();
         categoryComboBox.setPromptText("Pick Category");
+        fillCategory(addProductController.populateDropdown());
         priceField = new TextField();
         quantityField = new TextField();
         supplierField = new TextField();
@@ -152,6 +161,14 @@ public class AddProduct_View{
         grid.add(submitButton, 1, 5);
 
         return grid;
+    }
+    private void fillCategory(List<Category> categoryList) {
+        ObservableList<String> categoryString = FXCollections.observableArrayList();
+        for (Category cat: categoryList
+             ) {
+            categoryString.add(cat.getCategoryName());
+        }
+        categoryComboBox.setItems(categoryString);
     }
     
     private void handleDeleteProductMenuItemClick() {

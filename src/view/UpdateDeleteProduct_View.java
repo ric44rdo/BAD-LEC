@@ -1,5 +1,6 @@
 package view;
 
+import controller.AddProductController;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.geometry.Insets;
@@ -12,6 +13,8 @@ import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import model.Product;
+
+import java.sql.SQLException;
 
 public class UpdateDeleteProduct_View{
 
@@ -80,7 +83,13 @@ public class UpdateDeleteProduct_View{
         EventHandler<ActionEvent> addProductHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                handleAddProductMenuItemClick();
+
+                try {
+                    handleAddProductMenuItemClick();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         };
 
@@ -166,7 +175,8 @@ public class UpdateDeleteProduct_View{
         return grid;
     }
     
-    private void handleAddProductMenuItemClick() {
+    private void handleAddProductMenuItemClick() throws SQLException {
+
         AddProduct_View addProduct = new AddProduct_View(primaryStage);
         addProduct.ShowAddProductScene();
     }

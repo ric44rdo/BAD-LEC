@@ -16,7 +16,7 @@ public class CategoryDAO {
     }
 
     //Generate List from Database
-    public List<Category> getCategory() throws SQLException {
+    public List<Category> getCategory() {
         List<Category> category = new ArrayList<>();
         String query = "SELECT * FROM category";
         try {
