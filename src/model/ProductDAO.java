@@ -7,17 +7,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductList {
+public class ProductDAO {
     private Connection conn;
 
-    public ProductList(Connection conn) {
+    public ProductDAO(Connection conn) {
+        //Open connection to DB
         this.conn = conn;
     }
 
+    //Generate List from Database
     public List<Product> getProducts() throws SQLException {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM product";
-            try{
+        try {
             PreparedStatement pstmt = conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -27,7 +29,7 @@ public class ProductList {
                         rs.getInt("ProductPrice"),
                         rs.getInt("ProductQuantity"),
                         rs.getInt("SupplierID")
-                        ));
+                ));
             }
             pstmt.close();
         } catch (SQLException e) {
@@ -35,5 +37,7 @@ public class ProductList {
         }
         return products;
     }
+
+
 
 }
