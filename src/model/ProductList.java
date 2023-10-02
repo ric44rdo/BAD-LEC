@@ -14,15 +14,11 @@ public class ProductList {
         this.conn = conn;
     }
 
-    public List<Product> getProducts(String term) throws SQLException {
+    public List<Product> getProducts() throws SQLException {
         List<Product> products = new ArrayList<>();
-        if (term.equals("")) {
-            term = "*";
-        }
-        try {
-            String query = "SELECT ? FROM product";
+        String query = "SELECT * FROM product";
+            try{
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1,term);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 products.add(new Product(rs.getInt("id"),
@@ -39,7 +35,5 @@ public class ProductList {
         }
         return products;
     }
-    public List<Product> getProducts() throws SQLException {
-        return getProducts("*");
-    }
+
 }
