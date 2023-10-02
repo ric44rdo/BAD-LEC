@@ -26,9 +26,9 @@ public class ProductDAO {
                 products.add(new Product(rs.getInt("id"),
                         rs.getString("productName"),
                         rs.getInt("categoryID"),
-                        rs.getInt("ProductPrice"),
-                        rs.getInt("ProductQuantity"),
-                        rs.getInt("SupplierID")
+                        rs.getInt("productPrice"),
+                        rs.getInt("productQuantity"),
+                        rs.getInt("supplierID")
                 ));
             }
             pstmt.close();
@@ -38,6 +38,21 @@ public class ProductDAO {
         return products;
     }
 
+    public void addProduct(String productName, int categoryID, int productPrice, int productQuantity, int supplierID) throws SQLException {
+        String query = "INSERT INTO product(productName,categoryID,productPrice,productQuantity,supplierID) VALUES(?,?,?,?,?)";
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1,productName);
+            pstmt.setInt(2,categoryID);
+            pstmt.setInt(3,productPrice);
+            pstmt.setInt(4,productQuantity);
+            pstmt.setInt(5,supplierID);
 
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
