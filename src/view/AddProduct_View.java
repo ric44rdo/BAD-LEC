@@ -30,7 +30,7 @@ public class AddProduct_View{
     private ComboBox<String> categoryComboBox;
     private TextField priceField;
     private TextField quantityField;
-    private TextField supplierField;
+
     private Button submitButton;
     private TableView<Product> productTableView;
     private Stage primaryStage;
@@ -196,5 +196,21 @@ public class AddProduct_View{
 
     public TableView<Product> getProductTableView() {
         return productTableView;
+    }
+
+    public TextField getProductNameField() {
+        return productNameField;
+    }
+
+    public TextField getPriceField() {
+        return priceField;
+    }
+
+    public TextField getQuantityField() {
+        return quantityField;
+    }
+
+    public Button getSubmitButton() {
+        return submitButton;
     }
 }

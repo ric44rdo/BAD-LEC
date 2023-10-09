@@ -41,21 +41,57 @@ public class ProductDAO {
         return products;
     }
 
-    public void addProduct(String productName, int categoryID, int productPrice, int productQuantity, int supplierID) throws SQLException {
+    public void addProduct(String productName, String categoryName, int productPrice, int productQuantity, String supplierName){
         String query = "INSERT INTO product(productName,categoryID,productPrice,productQuantity,supplierID) VALUES(?,?,?,?,?)";
         try {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1,productName);
-            pstmt.setInt(2,categoryID);
+            pstmt.setInt(2,getCategoryID(categoryName));
             pstmt.setInt(3,productPrice);
             pstmt.setInt(4,productQuantity);
-            pstmt.setInt(5,supplierID);
+            pstmt.setInt(5,getSupplierID(supplierName));
 
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private int getCategoryID(String cat){
+        String query = "SELECT category.id FROM category WHERE categoryName = ?";
+        int id = 1;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1,cat);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("category.id");
+
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    private int getSupplierID(String sup){
+        String query = "SELECT supplier.id FROM supplier supplierName = ?";
+        int id = 1;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1,sup);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("category.id");
+
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 
 }
