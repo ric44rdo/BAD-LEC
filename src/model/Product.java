@@ -1,67 +1,48 @@
 package model;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Product {
-    private int id;
-    private String productName;
-    private int categoryID;
-    private int productPrice;
-    private int productQuantity;
-    private int supplierID;
+    private IntegerProperty id = new SimpleIntegerProperty();
+    private StringProperty productName = new SimpleStringProperty();
+    private IntegerProperty categoryID = new SimpleIntegerProperty();
+    private IntegerProperty productPrice = new SimpleIntegerProperty();
+    private IntegerProperty productQuantity = new SimpleIntegerProperty();
+    private IntegerProperty supplierID = new SimpleIntegerProperty();
 
     public Product(int id, String productName, int categoryID, int productPrice, int productQuantity, int supplierID) {
-        this.id = id;
-        this.productName = productName;
-        this.categoryID = categoryID;
-        this.productPrice = productPrice;
-        this.productQuantity = productQuantity;
-        this.supplierID = supplierID;
+        this.id.set(id);
+        this.productName.set(productName);
+        this.categoryID.set(categoryID);
+        this.productPrice.set(productPrice);
+        this.productQuantity.set(productQuantity);
+        this.supplierID.set(supplierID);
     }
 
-    public int getId() {
+    public IntegerProperty getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getProductName() {
+    public StringProperty getProductName() {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public int getCategoryID() {
+    public IntegerProperty getCategoryID() {
         return categoryID;
     }
 
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
-    }
-
-    public int getProductPrice() {
+    public IntegerProperty getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(int productPrice) {
-        this.productPrice = productPrice;
-    }
-
-    public int getProductQuantity() {
+    public IntegerProperty getProductQuantity() {
         return productQuantity;
     }
 
-    public void setProductQuantity(int productQuantity) {
-        this.productQuantity = productQuantity;
-    }
-
-    public int getSupplierID() {
+    public IntegerProperty getSupplierID() {
         return supplierID;
-    }
-
-    public void setSupplierID(int supplierID) {
-        this.supplierID = supplierID;
     }
 }

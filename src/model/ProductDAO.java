@@ -8,15 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
+    private Database db;
     private Connection conn;
 
-    public ProductDAO(Connection conn) {
+    public ProductDAO() {
         //Open connection to DB
-        this.conn = conn;
+        db = new Database();
+        db.connect();
+        conn = db.getConnection();
     }
 
     //Generate List from Database
-    public List<Product> getProducts() throws SQLException {
+    public List<Product> getProducts(){
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM product";
         try {

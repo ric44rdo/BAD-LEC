@@ -16,6 +16,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.Category;
 import model.Product;
+import model.Supplier;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -33,16 +34,19 @@ public class AddProduct_View{
     private Button submitButton;
     private TableView<Product> productTableView;
     private Stage primaryStage;
-    private AddProductController addProductController;
+    private ComboBox<String> supplierComboBox;
+    private TableColumn<Product, Integer> quantityColumn;
+    private TableColumn<Product, String> productNameColumn;
+    private TableColumn<Product, Integer> productIdColumn;
 
     public AddProduct_View(Stage primaryStage){
     	this.primaryStage = primaryStage;
+
     }
 
     public void ShowAddProductScene() {
 
         primaryStage.setTitle("FreshFind Inventory Management System");
-        addProductController = new AddProductController(primaryStage);
         // Create menu bar and menus
         Menu menuProduct = new Menu("Product Management");
         MenuItem addProductItem = new MenuItem("Add New Product");
@@ -107,9 +111,9 @@ public class AddProduct_View{
 
     private TableView<Product> createProductTableView() {
         TableView<Product> tableView = new TableView<>();
-        TableColumn<Product, String> productIdColumn = new TableColumn<>("Product ID");
-        TableColumn<Product, String> productNameColumn = new TableColumn<>("Product Name");
-        TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
+        productIdColumn = new TableColumn<>("Product ID");
+        productNameColumn = new TableColumn<>("Product Name");
+        quantityColumn = new TableColumn<>("Quantity");
         tableView.getColumns().addAll(productIdColumn, productNameColumn, quantityColumn);
         tableView.setPrefHeight(310);
         tableView.setPrefWidth(281);
@@ -142,10 +146,11 @@ public class AddProduct_View{
         productNameField = new TextField();
         categoryComboBox = new ComboBox<>();
         categoryComboBox.setPromptText("Pick Category");
-        fillCategory(addProductController.populateDropdown());
+
         priceField = new TextField();
         quantityField = new TextField();
-        supplierField = new TextField();
+        supplierComboBox = new ComboBox<>();
+        supplierComboBox.setPromptText("Pick Supplier");
         submitButton = new Button("Submit");
 
         grid.add(productNameLabel, 0, 0);
@@ -157,22 +162,39 @@ public class AddProduct_View{
         grid.add(categoryComboBox, 1, 1);
         grid.add(priceField, 1, 2);
         grid.add(quantityField, 1, 3);
-        grid.add(supplierField, 1, 4);
+        grid.add(supplierComboBox, 1, 4);
         grid.add(submitButton, 1, 5);
 
         return grid;
     }
-    private void fillCategory(List<Category> categoryList) {
-        ObservableList<String> categoryString = FXCollections.observableArrayList();
-        for (Category cat: categoryList
-             ) {
-            categoryString.add(cat.getCategoryName());
-        }
-        categoryComboBox.setItems(categoryString);
-    }
+
     
     private void handleDeleteProductMenuItemClick() {
     	UpdateDeleteProduct_View deletePage = new UpdateDeleteProduct_View(primaryStage);
     	deletePage.ShowUpdateDeleteProductScene();
+    }
+
+    public ComboBox<String> getCategoryComboBox() {
+        return categoryComboBox;
+    }
+
+    public ComboBox<String> getSupplierComboBox() {
+        return supplierComboBox;
+    }
+
+    public TableColumn<Product, Integer> getQuantityColumn() {
+        return quantityColumn;
+    }
+
+    public TableColumn<Product, String> getProductNameColumn() {
+        return productNameColumn;
+    }
+
+    public TableColumn<Product, Integer> getProductIdColumn() {
+        return productIdColumn;
+    }
+
+    public TableView<Product> getProductTableView() {
+        return productTableView;
     }
 }

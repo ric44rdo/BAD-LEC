@@ -177,7 +177,6 @@ public class UpdateDeleteProduct_View{
     
     private void handleAddProductMenuItemClick() throws SQLException {
 
-        AddProduct_View addProduct = new AddProduct_View(primaryStage);
-        addProduct.ShowAddProductScene();
+        AddProductController addProductController = new AddProductController(primaryStage);
     }
 }

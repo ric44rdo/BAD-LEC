@@ -8,15 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierDAO {
-    private Connection conn;
 
-    public SupplierDAO(Connection conn) {
+
+    private  Connection conn;
+    private  Database db;
+
+    public SupplierDAO() {
         //Open connection to DB
-        this.conn = conn;
+        db = new Database();
+        db.connect();
+        conn = db.getConnection();
     }
 
     //Generate List from Database
-    public List<Supplier> getSupplier() throws SQLException {
+    public List<Supplier> getSupplier() {
         List<Supplier> suppliers = new ArrayList<>();
         String query = "SELECT * FROM supplier";
         try {

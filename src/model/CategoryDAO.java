@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDAO {
+    private Database db;
     private Connection conn;
 
-    public CategoryDAO(Connection conn) {
+    public CategoryDAO() {
         //Open connection to DB
-        this.conn = conn;
+        db = new Database();
+        db.connect();
+        conn = db.getConnection();
     }
 
     //Generate List from Database
