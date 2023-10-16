@@ -1,5 +1,11 @@
 package controller;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -10,23 +16,39 @@ import view.UpdateDeleteProduct_View;
 public class LoginController {
 
     private Stage primaryStage;
+    private Database db;
     
     public LoginController(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.db = new Database();
     }
 
-    public boolean isValid(String email, String password) {
-        // Check if the provided email and password are valid
-        // This is where you should implement your authentication logic
-        // For example, you can check them against a database or another authentication system
-        // Return true if valid, false otherwise
-        
-        // Replace this with your actual authentication logic
-        // For demonstration purposes, let's assume a hardcoded user for testing:
-//    	User user = new User(email,password);
-//    	return user.getEmail().equals(email) && user.getPassword().equals(password);
-    	return true; 
+    public  boolean isValid(String email, String password) {
+    	boolean result = false;
+    	Connection connection = db.getConnection();
+    	
+    	if(connection != null) {
+    		try {
+				String sql = "SELECT * FROM User WHERE email = ? AND password = ?";
+				PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, email);
+				preparedStatement.setString(2, password);
+				
+				ResultSet resultSet = preparedStatement.executeQuery();
+				if(resultSet.next()) {
+					result = true;
+				}else {
+					result = false;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    		
+    	}
+		return result;
+    	
     }
+
 
     public void handleLoginButtonClick(String email, String password) {
         // Handle the login button click event
