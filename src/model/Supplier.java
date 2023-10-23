@@ -1,5 +1,8 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Supplier {
     private int id;
     private String supplierName;
@@ -7,6 +10,7 @@ public class Supplier {
     private String supplierPhone;
     private String paymentTerms;
     private  int categoryID;
+
 
     public Supplier(int id, String supplierName, String supplierAddress, String supplierPhone, String paymentTerms, int categoryID) {
         this.id = id;
