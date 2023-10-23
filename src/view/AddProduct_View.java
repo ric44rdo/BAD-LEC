@@ -1,16 +1,15 @@
 package view;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Product;
 
@@ -23,18 +22,23 @@ public class AddProduct_View{
     private ComboBox<String> categoryComboBox;
     private TextField priceField;
     private TextField quantityField;
-    private TextField supplierField;
+
     private Button submitButton;
     private TableView<Product> productTableView;
     private Stage primaryStage;
+    private ComboBox<String> supplierComboBox;
+    private TableColumn<Product, Integer> quantityColumn;
+    private TableColumn<Product, String> productNameColumn;
+    private TableColumn<Product, Integer> productIdColumn;
 
     public AddProduct_View(Stage primaryStage){
     	this.primaryStage = primaryStage;
+
     }
 
     public void ShowAddProductScene() {
-        primaryStage.setTitle("FreshFind Inventory Management System");
 
+        primaryStage.setTitle("FreshFind Inventory Management System");
         // Create menu bar and menus
         Menu menuProduct = new Menu("Product Management");
         MenuItem addProductItem = new MenuItem("Add New Product");
@@ -99,9 +103,9 @@ public class AddProduct_View{
 
     private TableView<Product> createProductTableView() {
         TableView<Product> tableView = new TableView<>();
-        TableColumn<Product, String> productIdColumn = new TableColumn<>("Product ID");
-        TableColumn<Product, String> productNameColumn = new TableColumn<>("Product Name");
-        TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
+        productIdColumn = new TableColumn<>("Product ID");
+        productNameColumn = new TableColumn<>("Product Name");
+        quantityColumn = new TableColumn<>("Quantity");
         tableView.getColumns().addAll(productIdColumn, productNameColumn, quantityColumn);
         tableView.setPrefHeight(310);
         tableView.setPrefWidth(281);
@@ -120,7 +124,7 @@ public class AddProduct_View{
         return vbox;
     }
 
-    private GridPane createAddProductForm() {
+    private GridPane createAddProductForm(){
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -134,9 +138,11 @@ public class AddProduct_View{
         productNameField = new TextField();
         categoryComboBox = new ComboBox<>();
         categoryComboBox.setPromptText("Pick Category");
+
         priceField = new TextField();
         quantityField = new TextField();
-        supplierField = new TextField();
+        supplierComboBox = new ComboBox<>();
+        supplierComboBox.setPromptText("Pick Supplier");
         submitButton = new Button("Submit");
 
         grid.add(productNameLabel, 0, 0);
@@ -148,14 +154,55 @@ public class AddProduct_View{
         grid.add(categoryComboBox, 1, 1);
         grid.add(priceField, 1, 2);
         grid.add(quantityField, 1, 3);
-        grid.add(supplierField, 1, 4);
+        grid.add(supplierComboBox, 1, 4);
         grid.add(submitButton, 1, 5);
 
         return grid;
     }
+
     
     private void handleDeleteProductMenuItemClick() {
     	UpdateDeleteProduct_View deletePage = new UpdateDeleteProduct_View(primaryStage);
     	deletePage.ShowUpdateDeleteProductScene();
+    }
+
+    public ComboBox<String> getCategoryComboBox() {
+        return categoryComboBox;
+    }
+
+    public ComboBox<String> getSupplierComboBox() {
+        return supplierComboBox;
+    }
+
+    public TableColumn<Product, Integer> getQuantityColumn() {
+        return quantityColumn;
+    }
+
+    public TableColumn<Product, String> getProductNameColumn() {
+        return productNameColumn;
+    }
+
+    public TableColumn<Product, Integer> getProductIdColumn() {
+        return productIdColumn;
+    }
+
+    public TableView<Product> getProductTableView() {
+        return productTableView;
+    }
+
+    public TextField getProductNameField() {
+        return productNameField;
+    }
+
+    public TextField getPriceField() {
+        return priceField;
+    }
+
+    public TextField getQuantityField() {
+        return quantityField;
+    }
+
+    public Button getSubmitButton() {
+        return submitButton;
     }
 }
