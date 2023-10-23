@@ -1,5 +1,4 @@
 package view;
-import model.Supplier;
 
 import controller.AddProductController;
 import javafx.stage.Stage;
@@ -7,33 +6,14 @@ import javafx.scene.Scene;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import model.Database;
 import model.Product;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ResourceBundle;
-import javafx.fxml.FXML;
 
+import java.sql.SQLException;
 
 public class UpdateDeleteProduct_View{
-	
-	Database con = new Database();
-	
-	
 
     private TextField searchField;
     private Button searchButton;
@@ -47,6 +27,10 @@ public class UpdateDeleteProduct_View{
     private Button deleteButton;
     private FlowPane buttonWrapper;
     private TableView<Product> productTableView;
+    private ComboBox<String> supplierComboBox;
+    private TableColumn<Product, Integer> quantityColumn;
+    private TableColumn<Product, String> productNameColumn;
+    private TableColumn<Product, Integer> productIdColumn;
     private Stage primaryStage;
 
     public UpdateDeleteProduct_View(Stage primaryStage){
@@ -55,8 +39,6 @@ public class UpdateDeleteProduct_View{
 
     public void ShowUpdateDeleteProductScene() {
         primaryStage.setTitle("FreshFind Inventory Management System");
-        
-        
 
         // Create menu bar and menus
         Menu menuProduct = new Menu("Product Management");
@@ -114,15 +96,6 @@ public class UpdateDeleteProduct_View{
 
         // Attach the event handler to the "Add New Product" menu item
         addProductItem.setOnAction(addProductHandler);
-        
-        deleteButton.setOnAction(event -> {
-            Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
-            if (selectedProduct != null) {
-            	deleteProduct(selectedProduct.getProductName());
-
-            }
-        });
-
     }
 
     private HBox createSearchBox() {
@@ -137,50 +110,23 @@ public class UpdateDeleteProduct_View{
     }
 
     private TableView<Product> createProductTableView() {
-          TableView<Product> tableView = new TableView<>();
-//        TableColumn<Product, Integer> productIdColumn = new TableColumn<Product, Integer>("Product ID");
-//        TableColumn<Product, String> productNameColumn = new TableColumn<Product, String>("Product Name");
-//        TableColumn<Product, Integer> quantityColumn = new TableColumn<Product, Integer>("Quantity");
-//
-//        productIdColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("id"));
-//        productNameColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("productName"));
-//        quantityColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productQuantity"));
-    	
-    	TableColumn<Product, Integer> productIdColumn = new TableColumn<Product, Integer>("Product ID");
-    	TableColumn<Product, String> productNameColumn = new TableColumn<Product, String>("Product Name");
-    	TableColumn<Product, Integer> quantityColumn = new TableColumn<Product, Integer>("Quantity");
-
-    	 productIdColumn.setCellValueFactory(data -> data.getValue().productIDProperty().asObject());
-    	 productNameColumn.setCellValueFactory(data -> data.getValue().productNameProperty());
-    	 quantityColumn.setCellValueFactory(data -> data.getValue().productQuantityProperty().asObject());
-
- 
+        TableView<Product> tableView = new TableView<>();
+        productIdColumn = new TableColumn<>("Product ID");
+        productNameColumn = new TableColumn<>("Product Name");
+        quantityColumn = new TableColumn<>("Quantity");
         tableView.getColumns().addAll(productIdColumn, productNameColumn, quantityColumn);
         tableView.setPrefHeight(310);
         tableView.setPrefWidth(281);
-
-        con.getData(); // Panggil getData() untuk mengambil data dari database
-        tableView.setItems(con.productData); // Setelah data diambil, set produkData ke TableView
         
-        tableView.setOnMouseClicked(event -> {
-            Product selectedProduct = tableView.getSelectionModel().getSelectedItem();
-            if (selectedProduct != null) {
-                productNameField.setText(selectedProduct.getProductName());
-                priceField.setText(String.valueOf(selectedProduct.getProductPrice()));
-                quantityField.setText(String.valueOf(selectedProduct.getProductQuantity()));
-                
-//                Supplier supplier = selectedProduct.getSupplier();
-//                if (supplier != null) { 
-//                    supplierField.setText(supplier.getSupplierName());
-//                } else {
-//                    supplierField.clear();
-//                }
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                // Handle the selection here and populate your form fields
+                handleProductSelection(newSelection);
             }
         });
-
+        
         return tableView;
     }
-
 
     private VBox createAddProductBox() {
         VBox vbox = new VBox();
@@ -210,12 +156,15 @@ public class UpdateDeleteProduct_View{
         categoryComboBox.setPromptText("Pick Category");
         priceField = new TextField();
         quantityField = new TextField();
-        supplierField = new TextField();
+        supplierComboBox = new ComboBox<>();
+        supplierComboBox.setPromptText("Pick Supplier");
         updateButton = new Button("Update");
         deleteButton = new Button("Delete");
         buttonWrapper = new FlowPane();
         buttonWrapper.getChildren().add(updateButton);
         buttonWrapper.getChildren().add(deleteButton);
+        updateButton.setDisable(true);
+        deleteButton.setDisable(true);
         
         buttonWrapper.setAlignment(Pos.CENTER_LEFT); // Set alignment to center
         buttonWrapper.setHgap(3); // Set horizontal gap between nodes
@@ -231,85 +180,77 @@ public class UpdateDeleteProduct_View{
         grid.add(categoryComboBox, 1, 1);
         grid.add(priceField, 1, 2);
         grid.add(quantityField, 1, 3);
-        grid.add(supplierField, 1, 4);
+        grid.add(supplierComboBox, 1, 4);
         grid.add(buttonWrapper, 1, 5);
-        
-        
-
         
 
         return grid;
-        
-        
     }
     
+    
+    private void handleProductSelection(Product selectedProduct) {
+        if (selectedProduct != null) {
+            productNameField.setText(selectedProduct.getProductName().get());
+            categoryComboBox.setValue(selectedProduct.getCategoryName().get());
+            priceField.setText(String.valueOf(selectedProduct.getProductPrice().get()));
+            quantityField.setText(String.valueOf(selectedProduct.getProductQuantity().get()));
+            supplierComboBox.setValue(selectedProduct.getSupplierName().get());
+            updateButton.setDisable(false);
+            deleteButton.setDisable(false);
+            
+            
+        } else {
+            // Handle the case where no product is selected (e.g., clear form fields)
+            productNameField.clear();
+            categoryComboBox.getSelectionModel().clearSelection();
+            priceField.clear();
+            quantityField.clear();
+            // Clear other form fields as needed
+        }
+    }
+
     private void handleAddProductMenuItemClick() throws SQLException {
 
         AddProductController addProductController = new AddProductController(primaryStage);
-
     }
     
-    public Connection connection;
-	public Statement statement;
-	public ResultSet resultSet;
-	public ResultSetMetaData resultMeta;
-	public PreparedStatement preparedStatement;
-	
-	private ObservableList<Product> productData;
-	
-	
+    public ComboBox<String> getCategoryComboBox() {
+        return categoryComboBox;
+    }
 
-	private void deleteProduct(String productName) {
-	    Connection conn = null;
-	    PreparedStatement preparedStatement = null;
+    public ComboBox<String> getSupplierComboBox() {
+        return supplierComboBox;
+    }
 
-	    try {
-	        conn = con.getConnection();
-	        String deleteQuery = "DELETE FROM product WHERE productName = ?";
-	        preparedStatement = conn.prepareStatement(deleteQuery);
-	        preparedStatement.setString(1, productName);
-	        int deletedRows = preparedStatement.executeUpdate();
+    public TableColumn<Product, Integer> getQuantityColumn() {
+        return quantityColumn;
+    }
 
-	        if (deletedRows > 0) {
-	            // Remove item from TableView
-	            Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
-	            if (selectedProduct != null) {
-	                productTableView.getItems().remove(selectedProduct);
-	            }
+    public TableColumn<Product, String> getProductNameColumn() {
+        return productNameColumn;
+    }
 
-	            // Clear input fields
-	            productNameField.clear();
-	            priceField.clear();
-	            quantityField.clear();
-	            supplierField.clear();
-	            
-	           
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        if (preparedStatement != null) {
-	            try {
-	                preparedStatement.close();
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	        
-	    }
-	}
+    public TableColumn<Product, Integer> getProductIdColumn() {
+        return productIdColumn;
+    }
 
+    public TableView<Product> getProductTableView() {
+        return productTableView;
+    }
 
+    public TextField getProductNameField() {
+        return productNameField;
+    }
 
-    
-    
-    
-    
-    
+    public TextField getPriceField() {
+        return priceField;
+    }
 
-	
+    public TextField getQuantityField() {
+        return quantityField;
+    }
+
+    public Button getSubmitButton() {
+        return deleteButton;
+    }
 }
-
-
-
-

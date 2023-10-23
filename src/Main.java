@@ -23,18 +23,7 @@ public class Main extends Application {
         // Start the login view
         loginView.showLoginScene(); 
         
-        
-        
-//        try {
-//			con.getData();
-//			
-//			while(con.resultSet.next()) {
-//				System.out.println(con.resultSet.getString("productName"));
-//			}
-//
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//		}
+
 
 	
     }

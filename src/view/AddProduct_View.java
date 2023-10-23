@@ -1,5 +1,6 @@
 package view;
 
+import controller.DeleteProductController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -162,8 +163,7 @@ public class AddProduct_View{
 
     
     private void handleDeleteProductMenuItemClick() {
-    	UpdateDeleteProduct_View deletePage = new UpdateDeleteProduct_View(primaryStage);
-    	deletePage.ShowUpdateDeleteProductScene();
+    	DeleteProductController deleteProductController = new DeleteProductController(primaryStage);
     }
 
     public ComboBox<String> getCategoryComboBox() {

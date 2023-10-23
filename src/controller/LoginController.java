@@ -56,8 +56,7 @@ public class LoginController {
         // Check if the provided credentials are valid
         if (isValid(email, password)) {
             // Redirect to the home page
-            UpdateDeleteProduct_View homePage = new UpdateDeleteProduct_View(primaryStage);
-            homePage.ShowUpdateDeleteProductScene();
+        	DeleteProductController deleteProductController = new DeleteProductController(primaryStage);
         } else {
             // Display an error message
             showError("Invalid credentials. Please try again.");
