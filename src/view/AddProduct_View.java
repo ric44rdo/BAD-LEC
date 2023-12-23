@@ -106,7 +106,7 @@ public class AddProduct_View{
         TableView<Product> tableView = new TableView<>();
         productIdColumn = new TableColumn<>("Product ID");
         productNameColumn = new TableColumn<>("Product Name");
-        quantityColumn = new TableColumn<>("Quantity");
+        quantityColumn = new TableColumn<>("Price");
         tableView.getColumns().addAll(productIdColumn, productNameColumn, quantityColumn);
         tableView.setPrefHeight(310);
         tableView.setPrefWidth(281);
