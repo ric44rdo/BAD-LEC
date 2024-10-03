@@ -1,0 +1,215 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost
+-- Generation Time: Sep 30, 2023 at 08:10 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 7.4.28
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `BAD_LEC`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL,
+  `categoryName` varchar(225) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `categoryName`) VALUES
+(1, 'Fruits & Vegetables'),
+(2, 'Meat'),
+(3, 'Household & Cleaning Supplies'),
+(4, 'Personal Care & Health'),
+(5, 'Beverage'),
+(6, 'Canned & Packaged Goods');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
+--
+
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL,
+  `productName` varchar(225) NOT NULL,
+  `categoryID` int(11) NOT NULL,
+  `productPrice` int(11) NOT NULL,
+  `productQuantity` int(11) NOT NULL,
+  `supplierID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `productName`, `categoryID`, `productPrice`, `productQuantity`, `supplierID`) VALUES
+(1, 'Jeruk Mandarin', 1, 10000, 50, 1),
+(2, 'Brokoli Super', 1, 8000, 50, 2),
+(3, 'Chicken Breast', 2, 30000, 50, 3),
+(4, 'Sirloin Steak', 2, 50000, 50, 4),
+(5, 'Mr.Muscle Toilet Gel 36ml', 3, 15000, 50, 5),
+(6, 'Wipol Pembersih Lantai 450ml', 3, 10000, 50, 6),
+(7, 'Panadol Biru 500mg strip', 4, 8000, 50, 7),
+(8, 'Head & Shoulder 600ml', 4, 15000, 50, 8),
+(9, 'Aqua 600ml', 5, 5000, 50, 9),
+(10, 'Le Minerale 1.5l', 5, 7000, 50, 10),
+(11, 'Chitos 600g', 6, 5000, 50, 11),
+(12, 'ABC Sarden 155g', 6, 10000, 50, 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supplier`
+--
+
+CREATE TABLE `supplier` (
+  `id` int(11) NOT NULL,
+  `supplierName` varchar(225) NOT NULL,
+  `supplierAddress` varchar(225) NOT NULL,
+  `supplierPhone` char(12) NOT NULL,
+  `payment_terms` varchar(225) NOT NULL,
+  `categoryID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`id`, `supplierName`, `supplierAddress`, `supplierPhone`, `payment_terms`, `categoryID`) VALUES
+(1, 'PT Suri Nusantara', 'Jl. Jend. Sudirman No. 123, Jakarta', '081234567890', '10/20', 1),
+(2, 'PT Sayur Segar', 'Jl. Gatot Subroto No. 456, Surabaya', '081298765432', 'N/20', 1),
+(3, 'PT Bumi Bersih', 'Jl. Diponegoro No. 789, Bandung', '082155555555', 'Net 30', 2),
+(4, 'PT Makmur Makmur', 'Jl. Merdeka No. 101, Yogyakarta', '081244444444', '15/30', 2),
+(5, 'PT Maju Jaya', 'Jl. Pahlawan No. 25, Medan', '081277777777', 'Net 45', 3),
+(6, 'PT Sumber Segar', 'Jl. Cikini Raya No. 36, Jakarta', '081288888888', 'N/15', 3),
+(7, 'PT Bersama Jaya', 'Jl. Gajah Mada No. 12, Surabaya', '081299999999', '10/30', 4),
+(8, 'PT Sejahtera', 'Jl. Asia Afrika No. 45, Bandung', '081211111111', 'Net 60', 4),
+(9, 'PT Nusantara Baru', 'Jl. Sudirman No. 67, Semarang', '081222222222', 'N/10', 5),
+(10, 'PT Murni Jaya', 'Jl. Thamrin No. 89, Makassar', '081233333333', '5/10', 5),
+(11, 'PT Segar Jaya', 'Jl. Malioboro No. 78, Yogyakarta', '081266666666', 'Net 90', 6),
+(12, 'PT Berkah Makmur', 'Jl. Darmo No. 56, Surabaya', '081277777777', 'N/5', 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(225) NOT NULL,
+  `email` varchar(225) NOT NULL,
+  `password` varchar(225) NOT NULL,
+  `phone` char(12) NOT NULL,
+  `role` enum('regular user','admin') NOT NULL DEFAULT 'regular user'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `email`, `password`, `phone`, `role`) VALUES
+(1, 'regularUser', 'regUser@gmail.com', '*2470C0C06DEE42FD1618BB99005ADCA2EC9D1E19', '085887001918', 'regular user'),
+(2, 'admin', 'adminr@gmail.com', '*2470C0C06DEE42FD1618BB99005ADCA2EC9D1E19', '085887001918', 'admin');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `categoryID` (`categoryID`),
+  ADD KEY `supplierID` (`supplierID`);
+
+--
+-- Indexes for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `categoryID` (`categoryID`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `supplier`
+--
+ALTER TABLE `supplier`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`categoryID`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_ibfk_2` FOREIGN KEY (`supplierID`) REFERENCES `supplier` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supplier`
+--
+ALTER TABLE `supplier`
+  ADD CONSTRAINT `supplier_ibfk_1` FOREIGN KEY (`categoryID`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
